@@ -1,6 +1,6 @@
 import os
 
-file_path = os.environ.get('MY_VARIABLE')
+file_path = os.environ.get('RUN_ID')
 
 with open(file_path, 'w') as file:
     file.write('This is a simple text file.\n')
