@@ -1,7 +1,8 @@
 import os
+import uuid
 
-# if not os.getenv("RUN_ID", None):
-#     os.environ['RUN_ID'] = str(uuid.uuid4())
+if not os.getenv("RUN_ID", None):
+    os.environ['RUN_ID'] = str(uuid.uuid4())
     
 file_path = os.environ.get('RUN_ID')
 
