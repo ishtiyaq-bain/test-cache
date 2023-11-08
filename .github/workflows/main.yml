@@ -22,14 +22,36 @@ jobs:
       with:
         python-version: 3.9
 
-    - name: Cache Python dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-      if: runner.os != 'Windows'
+    # - name: Cache Python dependencies
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: ~/.cache/pip
+    #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pip-
+    #   if: runner.os != 'Windows'
 
-    - name: Install Python dependencies
-      run: pip install -r requirements.txt
+    # - name: Install Python dependencies
+    #   run: pip install -r requirements.txt
+
+    - name: Set Environment Variable
+      run: |
+        echo "RUN_ID=${{ github.run_id }}" >> $GITHUB_ENV
+        
+    - name: Run tests
+      run: |
+        python test.py
+      working-directory: ./src
+      
+    - name: Export excel file path
+      run: |
+        filename="./src/$RUN_ID.txt"
+        echo "Uploading $filename as an artifact"
+        echo "artifact_path=$filename" >> $GITHUB_OUTPUT
+      id: excel-file-path
+        
+    - name: Upload Excel as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: generated-excel
+        path: ${{ steps.excel-file-path.outputs.artifact_path }}
