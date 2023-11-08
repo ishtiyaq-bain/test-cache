@@ -1,5 +1,8 @@
 import os
 
+# if not os.getenv("RUN_ID", None):
+#     os.environ['RUN_ID'] = str(uuid.uuid4())
+    
 file_path = os.environ.get('RUN_ID')
 
 with open(file_path, 'w') as file:
